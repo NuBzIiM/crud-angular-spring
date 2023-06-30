@@ -15,15 +15,13 @@ import { ErrorDialogComponent } from 'src/app/shared/compronents/error-dialog/er
 export class CoursesComponent implements OnInit {
 
   courses$: Observable<Course[]>;
-  displayedColumns = ['name', 'category']
+  displayedColumns = ['_id', 'name', 'category']
 
   //coursesService: CoursesService
 
   constructor(private coursesService: CoursesService,
     public dialog: MatDialog
     ) {
-    //this.courses = [];
-    //this.coursesService = new CoursesService();
     this.courses$ = this.coursesService.list().pipe(
       catchError(error => {
         this.onError('Erro ao carregar.')
