@@ -3,14 +3,14 @@
   <!-- Name Column -->
   <ng-container matColumnDef="name">
     <mat-header-cell *matHeaderCellDef> Curso </mat-header-cell>
-    <mat-cell *matCellDef="let element"> {{ element.name }} </mat-cell>
+    <mat-cell *matCellDef="let course"> {{ course.name }} </mat-cell>
   </ng-container>
 
   <!-- Category Column -->
   <ng-container matColumnDef="category">
     <mat-header-cell *matHeaderCellDef> Categoria </mat-header-cell>
-    <mat-cell *matCellDef="let element"> {{ element.category }}
-      <mat-icon aria-hidden="false" aria-label="Categoria do Curso" fontIcon="{{element.category | category}}"></mat-icon>
+    <mat-cell *matCellDef="let course"> {{ course.category }}
+      <mat-icon aria-hidden="false" aria-label="Categoria do Curso" fontIcon="{{course.category | category}}"></mat-icon>
     </mat-cell>
   </ng-container>
 
@@ -21,12 +21,12 @@
       </button>
     </mat-header-cell>
 
-    <mat-cell *matCellDef="let element" class="action-column">
-      <button mat-icon-button color="primary" aria-label="Editar curso" (click)="onEdit(element)">
+    <mat-cell *matCellDef="let course" class="action-column">
+      <button mat-icon-button color="primary" aria-label="Editar curso" (click)="onEdit(course)">
         <mat-icon>edit</mat-icon>
       </button>
 
-      <button mat-icon-button color="warn" aria-label="Remover curso">
+      <button mat-icon-button color="warn" aria-label="Remover curso" (click)="onDelete(course)">
         <mat-icon>delete</mat-icon>
       </button>
     </mat-cell>
