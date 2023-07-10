@@ -34,16 +34,15 @@ export class CourseFormComponent implements OnInit {
         Validators.maxLength(100)]
       ],
       category: [course.category, [Validators.required]],
-      lessons: this.formBuilder.array(this.retrieveLessons(course), Validators.required),
+      lessons: this.formBuilder.array(this.retrieveLessons(course), Validators.required)
     });
   }
 
   private retrieveLessons(course: Course) {
     const lessons = [];
     if (course?.lessons) {
-      course.lessons.forEach((lesson) =>
-        lessons.push(this.createLesson(lesson))
-      );
+      course.lessons.forEach(lesson =>
+        lessons.push(this.createLesson(lesson)));
     } else {
       lessons.push(this.createLesson());
     }
@@ -52,13 +51,13 @@ export class CourseFormComponent implements OnInit {
 
   private createLesson(lesson: Lesson = { id: '', name: '', youtubeUrl: '' }) {
     return this.formBuilder.group({
-      id: [lesson.id, [Validators.required,
+      id: [lesson.id],
+      name: [lesson.name, [Validators.required,
         Validators.minLength(5),
         Validators.maxLength(100)]],
-      name: [lesson.name],
       youtubeUrl: [lesson.youtubeUrl, [Validators.required,
         Validators.minLength(10),
-        Validators.maxLength(11)]],
+        Validators.maxLength(11)]]
     });
   }
 
@@ -68,7 +67,7 @@ export class CourseFormComponent implements OnInit {
 
   addNewLesson() {
     const lessons = this.form.get('lessons') as UntypedFormArray;
-    lessons.push(this.createLesson);
+    lessons.push(this.createLesson());
   }
 
   removeLesson(index: number) {
@@ -78,11 +77,10 @@ export class CourseFormComponent implements OnInit {
 
   onSubmit() {
     if (this.form.valid){
-      this.service.save(this.form.value).subscribe(
-        (result) => this.onSuccess(),
-        (error) => this.onError());
+      this.service.save(this.form.value)
+        .subscribe((result) => this.onSuccess(), (error) => this.onError());
     } else {
-      alert('form invalido')
+      alert('Form invalido')
     }
 
   }
