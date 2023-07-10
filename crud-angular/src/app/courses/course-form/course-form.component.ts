@@ -29,23 +29,21 @@ export class CourseFormComponent implements OnInit {
     const course: Course = this.route.snapshot.data['course'];
     this.form = this.formBuilder.group({
       _id: [course._id],
-      name: [
-        course.name,
-        [
-          Validators.required,
-          Validators.minLength(5),
-          Validators.maxLength(100)
-        ]
+      name: [course.name, [Validators.required,
+        Validators.minLength(5),
+        Validators.maxLength(100)]
       ],
       category: [course.category, [Validators.required]],
-      lessons: this.formBuilder.array(this.retrieveLessons(course)),
+      lessons: this.formBuilder.array(this.retrieveLessons(course), Validators.required),
     });
   }
 
   private retrieveLessons(course: Course) {
     const lessons = [];
     if (course?.lessons) {
-      course.lessons.forEach(lesson => lessons.push(this.createLesson(lesson)));
+      course.lessons.forEach((lesson) =>
+        lessons.push(this.createLesson(lesson))
+      );
     } else {
       lessons.push(this.createLesson());
     }
@@ -54,9 +52,13 @@ export class CourseFormComponent implements OnInit {
 
   private createLesson(lesson: Lesson = { id: '', name: '', youtubeUrl: '' }) {
     return this.formBuilder.group({
-      id: [lesson.id],
+      id: [lesson.id, [Validators.required,
+        Validators.minLength(5),
+        Validators.maxLength(100)]],
       name: [lesson.name],
-      youtubeUrl: [lesson.youtubeUrl]
+      youtubeUrl: [lesson.youtubeUrl, [Validators.required,
+        Validators.minLength(10),
+        Validators.maxLength(11)]],
     });
   }
 
@@ -75,10 +77,14 @@ export class CourseFormComponent implements OnInit {
   }
 
   onSubmit() {
-    this.service.save(this.form.value).subscribe(
-      (result) => this.onSuccess(),
-      (error) => this.onError()
-    );
+    if (this.form.valid){
+      this.service.save(this.form.value).subscribe(
+        (result) => this.onSuccess(),
+        (error) => this.onError());
+    } else {
+      alert('form invalido')
+    }
+
   }
 
   onCancel() {
@@ -116,5 +122,10 @@ export class CourseFormComponent implements OnInit {
     }
 
     return 'Campo invalido';
+  }
+
+  isFormArrayRequired() {
+    const lessons = this.form.get('lessons') as UntypedFormArray;
+    return !lessons.valid && lessons.hasError('required') && lessons.touched;
   }
 }
