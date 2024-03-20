@@ -80,7 +80,7 @@ export class CourseFormComponent implements OnInit {
       this.service.save(this.form.value)
         .subscribe((result) => this.onSuccess(), (error) => this.onError());
     } else {
-      alert('Form invalido')
+      alert('Form invalido');
     }
 
   }
